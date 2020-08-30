@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"io/ioutil"
+	"moghimi/myservice/src/api"
 	"moghimi/myservice/src/dao"
 	"moghimi/myservice/src/model"
 	"moghimi/myservice/src/utils"
@@ -13,48 +14,23 @@ import (
 )
 
 func Post(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println(request.Body)
 	device := &model.Device{}
 	err := json.Unmarshal([]byte(request.Body), &device)
 	if err != nil {
-		return sendError(utils.HttpError{Err: err, Code: 400})
+		return api.SendError(&request, utils.HttpError{OriginalError: err, Code: 400, Message: err.Error()})
 	}
 
 	err = device.Validate()
 	if err != nil {
-		return sendError(utils.HttpError{Err: err, Code: 400})
+		return api.SendError(&request, utils.HttpError{OriginalError: err, Code: 400, Message: err.Error()})
 	}
 
 	device, err = dao.SaveDevice(device)
 	if err != nil {
-		return sendError(err)
+		return api.SendError(&request, err)
 	}
 
-	marshal, err := json.Marshal(device)
-	if err != nil {
-		return sendError(err)
-	}
-
-	return events.APIGatewayProxyResponse{
-		Body:       string(marshal),
-		StatusCode: 201,
-		Headers: map[string]string{
-			"Content-Type": "application/json",
-		},
-	}, nil
-}
-
-func sendError(err error) (events.APIGatewayProxyResponse, error) {
-	code := findStatus(err)
-	return events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: code}, nil
-}
-
-func findStatus(err error) int {
-	httpError, ok := err.(utils.HttpError)
-	if ok {
-		return int(httpError.Code)
-	}
-	return 500
+	return api.SendJson(&request, &device, 201)
 }
 
 func main2() {

@@ -27,6 +27,13 @@ functions:
           path: api/devices
           method: post
 
+  get:
+    handler: bin/get
+    events:
+      - http:
+          path: api/devices/{id}
+          method: get
+
 #
 #resources:
 #  Resources:
