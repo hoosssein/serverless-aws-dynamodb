@@ -1,12 +1,5 @@
 package dao
 
-/*
-import "moghimi/myservice/src/model"
-
-func SaveDevice(device *model.Device) (*model.Device, error) {
-	return device,nil
-}*/
-
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
@@ -19,7 +12,10 @@ import (
 	"os"
 )
 
-func SaveDevice(device *model.Device) (*model.Device, error) {
+type DynamoDeviceDao struct {
+}
+
+func (this DynamoDeviceDao) SaveDevice(device *model.Device) (*model.Device, error) {
 	sess := CreateSession()
 	svc := dynamodb.New(sess)
 
@@ -41,7 +37,7 @@ func SaveDevice(device *model.Device) (*model.Device, error) {
 	return device, nil
 }
 
-func GetDevice(id string) (*model.Device, error) {
+func (this DynamoDeviceDao) GetDevice(id string) (*model.Device, error) {
 	sess := CreateSession()
 	svc := dynamodb.New(sess)
 
