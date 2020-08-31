@@ -13,9 +13,9 @@ func NewMockDeviceManager(saveDevice func(device *device.DeviceModel) (*device.D
 	return &MockDeviceManager{saveDevice: saveDevice, getDevice: getDevice}
 }
 
-func (m MockDeviceManager) PersistDevice(device *device.DeviceModel) (*device.DeviceModel, error) {
+func (m MockDeviceManager) SaveDevice(device *device.DeviceModel) (*device.DeviceModel, error) {
 	return m.saveDevice(device)
 }
-func (m MockDeviceManager) LoadDevice(id string) (*device.DeviceModel, error) {
+func (m MockDeviceManager) GetDevice(id string) (*device.DeviceModel, error) {
 	return m.getDevice(id)
 }
