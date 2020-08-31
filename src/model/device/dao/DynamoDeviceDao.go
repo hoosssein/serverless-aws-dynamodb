@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"moghimi/myservice/src/model"
+	"moghimi/myservice/src/model/device"
 	"moghimi/myservice/src/utils"
 	"os"
 )
@@ -15,7 +15,7 @@ import (
 type DynamoDeviceDao struct {
 }
 
-func (this DynamoDeviceDao) SaveDevice(device *model.Device) (*model.Device, error) {
+func (this DynamoDeviceDao) PersistDevice(device *device.DeviceModel) (*device.DeviceModel, error) {
 	sess := CreateSession()
 	svc := dynamodb.New(sess)
 
@@ -37,7 +37,7 @@ func (this DynamoDeviceDao) SaveDevice(device *model.Device) (*model.Device, err
 	return device, nil
 }
 
-func (this DynamoDeviceDao) GetDevice(id string) (*model.Device, error) {
+func (this DynamoDeviceDao) LoadDevice(id string) (*device.DeviceModel, error) {
 	sess := CreateSession()
 	svc := dynamodb.New(sess)
 
@@ -60,7 +60,7 @@ func (this DynamoDeviceDao) GetDevice(id string) (*model.Device, error) {
 			Message:       "NOT FOUND",
 		}
 	}
-	ans := model.Device{}
+	ans := device.DeviceModel{}
 	err = dynamodbattribute.UnmarshalMap(result.Item, &ans)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (this DynamoDeviceDao) GetDevice(id string) (*model.Device, error) {
 
 }
 
-func handelError(err error) (*model.Device, error) {
+func handelError(err error) (*device.DeviceModel, error) {
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
 			switch aerr.Code() {

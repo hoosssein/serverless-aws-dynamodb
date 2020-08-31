@@ -1,10 +1,10 @@
-package model
+package device
 
 import (
 	"github.com/go-playground/validator"
 )
 
-type Device struct {
+type DeviceModel struct {
 	Id          string `json:"id" validate:"required"`
 	DeviceModel string `json:"deviceModel" validate:"required"`
 	Name        string `json:"name" validate:"required"`
@@ -18,7 +18,7 @@ func init() {
 	validate = validator.New()
 }
 
-func (d Device) Validate() error {
+func (d DeviceModel) Validate() error {
 	err := validate.Struct(d)
 	return err
 }
