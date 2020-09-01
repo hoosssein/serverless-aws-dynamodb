@@ -12,7 +12,6 @@ type DefaultDeviceManager struct {
 }
 
 func (this DefaultDeviceManager) SaveDevice(deviceModel *device.DeviceModel) (*device.DeviceModel, error) {
-	//todo check if id is valid
 
 	err := Validate(deviceModel)
 	if err != nil {

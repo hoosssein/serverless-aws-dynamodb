@@ -7,13 +7,12 @@ import (
 	"moghimi/myservice/src/model/device"
 	"moghimi/myservice/src/model/device/manager"
 	"moghimi/myservice/src/utils"
+	"moghimi/myservice/src/utils/config"
 )
 
 type DeviceHandler struct {
 	Manager manager.DeviceManager
 }
-
-const IdPrefix = "/devices/"
 
 func (handler DeviceHandler) Post(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	deviceModel := &device.DeviceModel{}
@@ -35,7 +34,7 @@ func (handler DeviceHandler) Get(request events.APIGatewayProxyRequest) (events.
 		return api.SendError(&request, utils.HttpError{Code: 400, Message: "id is empty"})
 	}
 
-	id = IdPrefix + id
+	id = config.IdPrefix + id
 
 	deviceModel, err := handler.Manager.GetDevice(id)
 	if err != nil {

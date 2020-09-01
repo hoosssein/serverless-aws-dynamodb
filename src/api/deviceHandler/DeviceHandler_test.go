@@ -7,6 +7,7 @@ import (
 	"moghimi/myservice/src/model/device"
 	"moghimi/myservice/src/model/device/manager"
 	"moghimi/myservice/src/utils"
+	"moghimi/myservice/src/utils/config"
 	"reflect"
 	"testing"
 )
@@ -14,7 +15,7 @@ import (
 const existingId = "existingId"
 
 var existingDevice = device.DeviceModel{
-	Id:          IdPrefix + existingId,
+	Id:          config.IdPrefix + existingId,
 	DeviceModel: "DM",
 	Name:        "NAME",
 	Note:        "NOTE",
@@ -117,7 +118,7 @@ func ignoreError(input []byte, err error) string {
 
 func mockManagerGetDevice() *manager.MockDeviceManager {
 	return manager.NewMockDeviceManager(nil, func(id string) (*device.DeviceModel, error) {
-		if id == IdPrefix+existingId {
+		if id == config.IdPrefix+existingId {
 			return &existingDevice, nil
 		}
 		return nil, utils.HttpError{
