@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 	"moghimi/myservice/src/model/device"
 	"moghimi/myservice/src/utils"
 	"os"
@@ -16,9 +17,11 @@ type DynamoDeviceDao struct {
 }
 
 func (this DynamoDeviceDao) PersistDevice(device *device.DeviceModel) (*device.DeviceModel, error) {
-	sess := CreateSession()
-	svc := dynamodb.New(sess)
+	svc := requireSession()
+	return persistDevice(svc, device)
+}
 
+func persistDevice(svc dynamodbiface.DynamoDBAPI, device *device.DeviceModel) (*device.DeviceModel, error) {
 	dynamoAttribute, err := dynamodbattribute.MarshalMap(device)
 	if err != nil {
 		return nil, err
@@ -38,9 +41,12 @@ func (this DynamoDeviceDao) PersistDevice(device *device.DeviceModel) (*device.D
 }
 
 func (this DynamoDeviceDao) LoadDevice(id string) (*device.DeviceModel, error) {
-	sess := CreateSession()
-	svc := dynamodb.New(sess)
+	svc := requireSession()
+	return loadDevice(svc, id)
 
+}
+
+func loadDevice(svc dynamodbiface.DynamoDBAPI, id string) (*device.DeviceModel, error) {
 	result, err := svc.GetItem(&dynamodb.GetItemInput{
 		TableName: tableName(),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -66,7 +72,6 @@ func (this DynamoDeviceDao) LoadDevice(id string) (*device.DeviceModel, error) {
 		return nil, err
 	}
 	return &ans, nil
-
 }
 
 func handelError(err error) (*device.DeviceModel, error) {
@@ -86,9 +91,10 @@ func tableName() *string {
 	return aws.String(os.Getenv("DEVICES_TABLE"))
 }
 
-func CreateSession() *session.Session {
-	return session.Must(session.NewSession(&aws.Config{
+func requireSession() dynamodbiface.DynamoDBAPI {
+	sess := session.Must(session.NewSession(&aws.Config{
 		Region:   aws.String(os.Getenv("AWS_REGION")),
 		Endpoint: aws.String(os.Getenv("AWS_ENDPOINT")),
 	}))
+	return dynamodb.New(sess)
 }

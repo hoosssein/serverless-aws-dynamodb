@@ -1,6 +1,8 @@
 package dao
 
-import "moghimi/myservice/src/model/device"
+import (
+	"moghimi/myservice/src/model/device"
+)
 
 type DeviceDao interface {
 	PersistDevice(device *device.DeviceModel) (*device.DeviceModel, error)
