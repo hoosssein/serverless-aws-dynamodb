@@ -4,14 +4,23 @@ frameworkVersion: '>=1.28.0 <2.0.0'
 provider:
   name: aws
   runtime: go1.x
-
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource:  "arn:aws:dynamodb:us-east-1:675174937919:table/devices2-dev"
+#        Fn::GetAtt:
+#          - Devices
+#          - Arn
 # you can define service wide environment variables here
   environment:
-    DEVICES_TABLE: devices
-    AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
-    AWS_REGION: us-west-2
-    AWS_ENDPOINT: http://192.168.1.103:8000
+    DEVICES_TABLE: 'devices2-${opt:stage, self:provider.stage}'
+#    AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+#    AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+#    AWS_REGION: us-east-1
+#    AWS_ENDPOINT: http://192.168.1.103:8000
 
 package:
   exclude:
@@ -50,4 +59,4 @@ functions:
 #        ProvisionedThroughput:
 #          ReadCapacityUnits: 1
 #          WriteCapacityUnits: 1
-#        TableName: 'devices'
+#        TableName: 'devices2-${opt:stage, self:provider.stage}'

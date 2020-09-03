@@ -92,9 +92,13 @@ func tableName() *string {
 }
 
 func requireSession() dynamodbiface.DynamoDBAPI {
+	var endpoint *string = nil
+	if os.Getenv("AWS_ENDPOINT") != "" {
+		endpoint = aws.String(os.Getenv("AWS_ENDPOINT"))
+	}
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:   aws.String(os.Getenv("AWS_REGION")),
-		Endpoint: aws.String(os.Getenv("AWS_ENDPOINT")),
+		Endpoint: endpoint,
 	}))
 	return dynamodb.New(sess)
 }

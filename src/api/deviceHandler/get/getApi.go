@@ -12,11 +12,11 @@ import (
 	"os"
 )
 
-func main2() {
+func main() {
 	lambda.Start(deviceHandler.DeviceHandler{Manager: manager.DefaultDeviceManager{Dao: dao.DynamoDeviceDao{}}}.Get)
 }
 
-func main() {
+func main2() {
 	fileName := os.Args[1]
 	content, _ := ioutil.ReadFile(fileName)
 	request := events.APIGatewayProxyRequest{}

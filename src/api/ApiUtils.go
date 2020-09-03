@@ -11,7 +11,9 @@ func SendError(request *events.APIGatewayProxyRequest, err error) (events.APIGat
 	code := findStatus(err)
 	message := findMessage(err)
 	logError(request, err)
-	return events.APIGatewayProxyResponse{Body: message, StatusCode: code}, nil
+	return events.APIGatewayProxyResponse{Body: message, Headers: map[string]string{
+		"Content-Type": "text/plain",
+	}, StatusCode: code}, nil
 }
 
 func logError(request *events.APIGatewayProxyRequest, err error) {
