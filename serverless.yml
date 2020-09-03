@@ -10,16 +10,14 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
-      Resource:  "arn:aws:dynamodb:us-east-1:675174937919:table/devices2-dev"
-#        Fn::GetAtt:
-#          - Devices
-#          - Arn
+#      Resource:  "arn:aws:dynamodb:us-east-1:675174937919:table/devices3-dev"
+      Resource:
+        Fn::GetAtt:
+          - Devices
+          - Arn
 # you can define service wide environment variables here
   environment:
-    DEVICES_TABLE: 'devices2-${opt:stage, self:provider.stage}'
-#    AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
-#    AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
-#    AWS_REGION: us-east-1
+    DEVICES_TABLE: 'devices3-${opt:stage, self:provider.stage}'
 #    AWS_ENDPOINT: http://192.168.1.103:8000
 
 package:
@@ -43,20 +41,20 @@ functions:
           path: api/devices/{id}
           method: get
 
-#
-#resources:
-#  Resources:
-#    Devices:
-#      Type: 'AWS::DynamoDB::Table'
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#          - AttributeName: id
-#            AttributeType: S
-#        KeySchema:
-#          - AttributeName: id
-#            KeyType: HASH
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: 'devices2-${opt:stage, self:provider.stage}'
+
+resources:
+  Resources:
+    Devices:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'devices3-${opt:stage, self:provider.stage}'
