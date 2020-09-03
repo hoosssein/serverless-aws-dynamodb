@@ -10,15 +10,12 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
-#      Resource:  "arn:aws:dynamodb:us-east-1:675174937919:table/devices3-dev"
       Resource:
         Fn::GetAtt:
           - Devices
           - Arn
-# you can define service wide environment variables here
   environment:
-    DEVICES_TABLE: 'devices3-${opt:stage, self:provider.stage}'
-#    AWS_ENDPOINT: http://192.168.1.103:8000
+    DEVICES_TABLE: '${self:resources.Resources.Devices.Properties.TableName}'
 
 package:
   exclude:
