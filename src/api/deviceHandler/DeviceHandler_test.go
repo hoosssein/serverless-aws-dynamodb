@@ -61,7 +61,10 @@ func TestDeviceHandler_Get(t *testing.T) {
 			},
 			want: events.APIGatewayProxyResponse{
 				StatusCode: 400,
-				Body:       "id is empty",
+				Headers: map[string]string{
+					"Content-Type": "text/plain",
+				},
+				Body: "id is empty",
 			},
 			wantErr: false,
 		},
@@ -79,7 +82,10 @@ func TestDeviceHandler_Get(t *testing.T) {
 			},
 			want: events.APIGatewayProxyResponse{
 				StatusCode: 404,
-				Body:       "NOT FOUND",
+				Headers: map[string]string{
+					"Content-Type": "text/plain",
+				},
+				Body: "NOT FOUND",
 			},
 			wantErr: false,
 		},
@@ -175,7 +181,10 @@ func TestDeviceHandler_Post(t *testing.T) {
 			},
 			want: events.APIGatewayProxyResponse{
 				StatusCode: 402,
-				Body:       "SOME ERROR",
+				Headers: map[string]string{
+					"Content-Type": "text/plain",
+				},
+				Body: "SOME ERROR",
 			},
 			wantErr: false,
 		}, {
@@ -192,7 +201,10 @@ func TestDeviceHandler_Post(t *testing.T) {
 			},
 			want: events.APIGatewayProxyResponse{
 				StatusCode: 500,
-				Body:       "INTERNAL SERVER ERROR",
+				Headers: map[string]string{
+					"Content-Type": "text/plain",
+				},
+				Body: "INTERNAL SERVER ERROR",
 			},
 			wantErr: false,
 		},

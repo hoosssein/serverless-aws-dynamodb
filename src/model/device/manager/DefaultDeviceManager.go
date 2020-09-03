@@ -1,10 +1,12 @@
 package manager
 
 import (
-	"github.com/go-playground/validator"
+	"errors"
 	"moghimi/myservice/src/model/device"
 	"moghimi/myservice/src/model/device/dao"
 	"moghimi/myservice/src/utils"
+	"moghimi/myservice/src/utils/config"
+	"strings"
 )
 
 type DefaultDeviceManager struct {
@@ -25,13 +27,21 @@ func (this DefaultDeviceManager) GetDevice(id string) (*device.DeviceModel, erro
 	return this.Dao.LoadDevice(id)
 }
 
-var validate *validator.Validate
-
-func init() {
-	validate = validator.New()
-}
-
 func Validate(d *device.DeviceModel) error {
-	err := validate.Struct(d)
-	return err
+	if d.DeviceModel == "" {
+		return errors.New("deviceModel is empty")
+	}
+	if d.Name == "" {
+		return errors.New("name is empty")
+	}
+	if d.Note == "" {
+		return errors.New("note is empty")
+	}
+	if d.Serial == "" {
+		return errors.New("serial is empty")
+	}
+	if !strings.HasPrefix(d.Id, config.IdPrefix) {
+		return errors.New("id should start with" + config.IdPrefix)
+	}
+	return nil
 }
