@@ -4,25 +4,19 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 	"moghimi/myservice/src/model/device"
+	"moghimi/myservice/src/model/device/repository"
 	"moghimi/myservice/src/utils"
 	"os"
 )
 
 type DynamoDeviceDao struct {
+	Repository repository.DynamoDBAPIExtended
 }
 
 func (this DynamoDeviceDao) PersistDevice(device *device.DeviceModel) (*device.DeviceModel, error) {
-	svc := requireSession()
-	return persistDevice(svc, device)
-}
-
-func persistDevice(svc dynamodbiface.DynamoDBAPI, device *device.DeviceModel) (*device.DeviceModel, error) {
-	dynamoAttribute, err := dynamodbattribute.MarshalMap(device)
+	dynamoAttribute, err := this.Repository.MarshalMap(device)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +26,7 @@ func persistDevice(svc dynamodbiface.DynamoDBAPI, device *device.DeviceModel) (*
 		TableName: tableName(),
 	}
 
-	_, err = svc.PutItem(input)
+	_, err = this.Repository.CreateSession().PutItem(input)
 	if err != nil {
 		return nil, err
 	}
@@ -41,13 +35,7 @@ func persistDevice(svc dynamodbiface.DynamoDBAPI, device *device.DeviceModel) (*
 }
 
 func (this DynamoDeviceDao) LoadDevice(id string) (*device.DeviceModel, error) {
-	svc := requireSession()
-	return loadDevice(svc, id)
-
-}
-
-func loadDevice(svc dynamodbiface.DynamoDBAPI, id string) (*device.DeviceModel, error) {
-	result, err := svc.GetItem(&dynamodb.GetItemInput{
+	result, err := this.Repository.CreateSession().GetItem(&dynamodb.GetItemInput{
 		TableName: tableName(),
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
@@ -67,7 +55,7 @@ func loadDevice(svc dynamodbiface.DynamoDBAPI, id string) (*device.DeviceModel, 
 		}
 	}
 	ans := device.DeviceModel{}
-	err = dynamodbattribute.UnmarshalMap(result.Item, &ans)
+	err = this.Repository.UnmarshalMap(result.Item, &ans)
 	if err != nil {
 		return nil, err
 	}
@@ -89,16 +77,4 @@ func handelError(err error) (*device.DeviceModel, error) {
 
 func tableName() *string {
 	return aws.String(os.Getenv("DEVICES_TABLE"))
-}
-
-func requireSession() dynamodbiface.DynamoDBAPI {
-	var endpoint *string = nil
-	if os.Getenv("AWS_ENDPOINT") != "" {
-		endpoint = aws.String(os.Getenv("AWS_ENDPOINT"))
-	}
-	sess := session.Must(session.NewSession(&aws.Config{
-		Region:   aws.String(os.Getenv("AWS_REGION")),
-		Endpoint: endpoint,
-	}))
-	return dynamodb.New(sess)
 }

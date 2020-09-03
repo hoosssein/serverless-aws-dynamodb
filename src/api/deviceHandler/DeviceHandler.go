@@ -5,13 +5,23 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"moghimi/myservice/src/api"
 	"moghimi/myservice/src/model/device"
+	"moghimi/myservice/src/model/device/dao"
 	"moghimi/myservice/src/model/device/manager"
+	"moghimi/myservice/src/model/device/repository"
 	"moghimi/myservice/src/utils"
 	"moghimi/myservice/src/utils/config"
 )
 
 type DeviceHandler struct {
 	Manager manager.DeviceManager
+}
+
+var Handler = DeviceHandler{
+	Manager: manager.DefaultDeviceManager{
+		Dao: dao.DynamoDeviceDao{
+			Repository: repository.NewDynamoDBAPIExtended(),
+		},
+	},
 }
 
 func (handler DeviceHandler) Post(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

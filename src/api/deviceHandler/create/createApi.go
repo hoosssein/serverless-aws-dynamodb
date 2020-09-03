@@ -1,26 +1,10 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"io/ioutil"
 	"moghimi/myservice/src/api/deviceHandler"
-	"moghimi/myservice/src/model/device/dao"
-	"moghimi/myservice/src/model/device/manager"
-	"os"
 )
 
 func main() {
-	lambda.Start(deviceHandler.DeviceHandler{Manager: manager.DefaultDeviceManager{Dao: dao.DynamoDeviceDao{}}}.Post)
-}
-
-func main2() {
-	fileName := os.Args[1]
-	content, _ := ioutil.ReadFile(fileName)
-	request := events.APIGatewayProxyRequest{}
-	json.Unmarshal(content, &request)
-	post, err := deviceHandler.DeviceHandler{Manager: manager.DefaultDeviceManager{Dao: dao.DynamoDeviceDao{}}}.Post(request)
-	fmt.Println(post, err)
+	lambda.Start(deviceHandler.Handler.Post)
 }
