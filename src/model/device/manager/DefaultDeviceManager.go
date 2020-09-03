@@ -41,7 +41,7 @@ func Validate(d *device.DeviceModel) error {
 		return errors.New("serial is empty")
 	}
 	if !strings.HasPrefix(d.Id, config.IdPrefix) {
-		return errors.New("id should start with" + config.IdPrefix)
+		return errors.New("id should start with " + config.IdPrefix)
 	}
 	return nil
 }
