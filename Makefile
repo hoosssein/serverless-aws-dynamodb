@@ -10,7 +10,6 @@ setup: ## Install all the build and lint dependencies
 .PHONY: dep
 dep: ## Run dep ensure and prune
 	dep ensure
-	dep prune
 
 .PHONY: test
 test: ## Run all the tests

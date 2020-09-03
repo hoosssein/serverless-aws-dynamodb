@@ -43,5 +43,8 @@ func Validate(d *device.DeviceModel) error {
 	if !strings.HasPrefix(d.Id, config.IdPrefix) {
 		return errors.New("id should start with " + config.IdPrefix)
 	}
+	if len(d.Id) <= len(config.IdPrefix) {
+		return errors.New("id should contains strings after " + config.IdPrefix)
+	}
 	return nil
 }

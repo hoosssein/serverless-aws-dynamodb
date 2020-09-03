@@ -18,10 +18,25 @@ func TestDefaultDeviceManager_SaveDevice_EmptyField_returnError(t *testing.T) {
 	AssertEquals(t, httpError.Code, 400, "bad status code")
 }
 
-func TestDefaultDeviceManager_SaveDevice_IdIsInvalid_returnError(t *testing.T) {
+func TestDefaultDeviceManager_SaveDevice_IdIsDoesNotStartWithThePrefix_returnError(t *testing.T) {
 	manager := DefaultDeviceManager{}
 	deviceModel := device.DeviceModel{
 		Id:          "/badPrefix/id1",
+		DeviceModel: "STH",
+		Name:        "STH",
+		Note:        "STH",
+		Serial:      "STH",
+	}
+	_, err := manager.SaveDevice(&deviceModel)
+	AssertTrue(t, err != nil, " expect error ")
+	httpError, ok := err.(HttpError)
+	AssertTrue(t, ok, fmt.Sprint(" bad error type ", ok))
+	AssertEquals(t, httpError.Code, 400, "bad status code")
+}
+func TestDefaultDeviceManager_SaveDevice_IdIsEqualsToPrefix_returnError(t *testing.T) {
+	manager := DefaultDeviceManager{}
+	deviceModel := device.DeviceModel{
+		Id:          config.IdPrefix,
 		DeviceModel: "STH",
 		Name:        "STH",
 		Note:        "STH",
