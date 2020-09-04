@@ -3,13 +3,13 @@ package deviceHandler
 import (
 	"encoding/json"
 	"github.com/aws/aws-lambda-go/events"
-	"moghimi/myservice/src/api"
-	"moghimi/myservice/src/model/device"
-	"moghimi/myservice/src/model/device/dao"
-	"moghimi/myservice/src/model/device/manager"
-	"moghimi/myservice/src/model/device/repository"
-	"moghimi/myservice/src/utils"
-	"moghimi/myservice/src/utils/config"
+	"serverless-aws-dynamodb/src/api"
+	"serverless-aws-dynamodb/src/model/device"
+	"serverless-aws-dynamodb/src/model/device/dao"
+	"serverless-aws-dynamodb/src/model/device/manager"
+	"serverless-aws-dynamodb/src/model/device/repository"
+	"serverless-aws-dynamodb/src/utils"
+	"serverless-aws-dynamodb/src/utils/config"
 )
 
 type DeviceHandler struct {

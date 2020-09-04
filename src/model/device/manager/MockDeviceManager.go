@@ -1,7 +1,7 @@
 package manager
 
 import (
-	"moghimi/myservice/src/model/device"
+	"serverless-aws-dynamodb/src/model/device"
 )
 
 type MockDeviceManager struct {

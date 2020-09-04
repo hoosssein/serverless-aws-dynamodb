@@ -48,7 +48,7 @@ build: ## Build a version
 
 .PHONY: clean
 clean: ## Remove temporary files
-	go clean
+	rm -r bin/*
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help

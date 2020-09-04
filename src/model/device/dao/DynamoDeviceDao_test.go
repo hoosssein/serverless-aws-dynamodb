@@ -5,9 +5,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-	. "moghimi/myservice/src/model/device"
-	"moghimi/myservice/src/model/device/repository"
-	"moghimi/myservice/src/utils"
+	. "serverless-aws-dynamodb/src/model/device"
+	"serverless-aws-dynamodb/src/model/device/repository"
+	"serverless-aws-dynamodb/src/utils"
 	"testing"
 )
 
@@ -23,7 +23,7 @@ func (d DynamodbRepositoryMock) CreateSession() dynamodbiface.DynamoDBAPI {
 
 const successfulUnmarshal = "valid id"
 
-func (d DynamodbRepositoryMock) UnmarshalMap(m map[string]*dynamodb.AttributeValue, out interface{}) error {
+func (d DynamodbRepositoryMock) UnmarshalMap(_ map[string]*dynamodb.AttributeValue, out interface{}) error {
 	model, ok := out.(*DeviceModel)
 	if !ok {
 		return errors.New("invalid interface passed to UnmarshalMap")

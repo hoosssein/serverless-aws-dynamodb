@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/aws/aws-lambda-go/events"
-	"moghimi/myservice/src/model/device"
-	"moghimi/myservice/src/model/device/manager"
-	"moghimi/myservice/src/utils"
-	"moghimi/myservice/src/utils/config"
 	"reflect"
+	"serverless-aws-dynamodb/src/model/device"
+	"serverless-aws-dynamodb/src/model/device/manager"
+	"serverless-aws-dynamodb/src/utils"
+	"serverless-aws-dynamodb/src/utils/config"
 	"testing"
 )
 

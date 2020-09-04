@@ -1,6 +1,6 @@
 package manager
 
-import "moghimi/myservice/src/model/device"
+import "serverless-aws-dynamodb/src/model/device"
 
 type DeviceManager interface {
 	SaveDevice(deviceModel *device.DeviceModel) (*device.DeviceModel, error)

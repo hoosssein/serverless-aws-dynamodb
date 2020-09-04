@@ -5,10 +5,10 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"moghimi/myservice/src/model/device"
-	"moghimi/myservice/src/model/device/repository"
-	"moghimi/myservice/src/utils"
 	"os"
+	"serverless-aws-dynamodb/src/model/device"
+	"serverless-aws-dynamodb/src/model/device/repository"
+	"serverless-aws-dynamodb/src/utils"
 )
 
 type DynamoDeviceDao struct {

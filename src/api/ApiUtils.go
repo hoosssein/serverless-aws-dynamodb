@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
-	"moghimi/myservice/src/utils"
+	"serverless-aws-dynamodb/src/utils"
 )
 
 func SendError(request *events.APIGatewayProxyRequest, err error) (events.APIGatewayProxyResponse, error) {

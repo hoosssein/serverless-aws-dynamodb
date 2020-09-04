@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"moghimi/myservice/src/model/device"
+	"serverless-aws-dynamodb/src/model/device"
 )
 
 type DeviceDao interface {

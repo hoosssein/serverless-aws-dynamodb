@@ -2,10 +2,10 @@ package manager
 
 import (
 	"fmt"
-	"moghimi/myservice/src/model/device"
-	"moghimi/myservice/src/model/device/dao"
-	. "moghimi/myservice/src/utils"
-	"moghimi/myservice/src/utils/config"
+	"serverless-aws-dynamodb/src/model/device"
+	"serverless-aws-dynamodb/src/model/device/dao"
+	. "serverless-aws-dynamodb/src/utils"
+	"serverless-aws-dynamodb/src/utils/config"
 	"testing"
 )
 
