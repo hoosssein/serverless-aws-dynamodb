@@ -132,8 +132,37 @@ func Test_getDevice_success(t *testing.T) {
 		SuccessFulUnmarshal: true,
 	}}
 	deviceModel, err := dao.LoadDevice(existingId)
-	utils.AssertEquals(t, err, nil, "expecting no error")
+	utils.AssertEquals(t, nil, err, "expecting no error")
 	utils.AssertEquals(t, successfulUnmarshal, deviceModel.Id, "expecting successful unmarshal")
+
+}
+
+func Test_getDevice_fialToUnmarshal(t *testing.T) {
+	existingId := "Id"
+
+	dynamoDb := DynamodbMock{
+		getItem: func(input *dynamodb.GetItemInput) (*dynamodb.GetItemOutput, error) {
+			if *(input.Key["id"].S) == existingId {
+				return &dynamodb.GetItemOutput{
+					Item: map[string]*dynamodb.AttributeValue{
+						"Id": {
+							S: &existingId,
+						},
+					},
+				}, nil
+			}
+			return nil, errors.New("entity not found")
+		},
+	}
+
+	dao := DynamoDeviceDao{Repository: DynamodbRepositoryMock{
+		DynamodbMock:        dynamoDb,
+		SuccessFulUnmarshal: false,
+	}}
+	deviceModel, err := dao.LoadDevice(existingId)
+	var expectingDeviceModel *DeviceModel = nil
+	utils.AssertEquals(t, "fail to unmarshal", err.Error(), "expecting error")
+	utils.AssertEquals(t, expectingDeviceModel, deviceModel, "expecting successful unmarshal")
 
 }
 

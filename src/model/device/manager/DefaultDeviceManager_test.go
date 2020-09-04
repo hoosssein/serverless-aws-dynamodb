@@ -9,16 +9,47 @@ import (
 	"testing"
 )
 
-func TestDefaultDeviceManager_SaveDevice_EmptyField_returnError(t *testing.T) {
+func TestDefaultDeviceManager_SaveDevice_EmptyDeviceModel_returnError(t *testing.T) {
+	deviceModel := newValidDeviceModel()
+	deviceModel.DeviceModel = ""
+	checkEmptyFieldReturnError(t, deviceModel)
+}
+func TestDefaultDeviceManager_SaveDevice_EmptyName_returnError(t *testing.T) {
+	deviceModel := newValidDeviceModel()
+	deviceModel.Name = ""
+	checkEmptyFieldReturnError(t, deviceModel)
+}
+func TestDefaultDeviceManager_SaveDevice_EmptyNote_returnError(t *testing.T) {
+	deviceModel := newValidDeviceModel()
+	deviceModel.Note = ""
+	checkEmptyFieldReturnError(t, deviceModel)
+}
+func TestDefaultDeviceManager_SaveDevice_EmptySerial_returnError(t *testing.T) {
+	deviceModel := newValidDeviceModel()
+	deviceModel.Serial = ""
+	checkEmptyFieldReturnError(t, deviceModel)
+}
+
+func newValidDeviceModel() *device.DeviceModel {
+	return &device.DeviceModel{
+		Id:          "id1",
+		DeviceModel: "DM",
+		Name:        "N",
+		Note:        "N",
+		Serial:      "S",
+	}
+}
+
+func checkEmptyFieldReturnError(t *testing.T, device *device.DeviceModel) {
 	manager := DefaultDeviceManager{}
-	_, err := manager.SaveDevice(&device.DeviceModel{})
+	_, err := manager.SaveDevice(device)
 	AssertTrue(t, err != nil, " expect error ")
 	httpError, ok := err.(HttpError)
 	AssertTrue(t, ok, fmt.Sprint(" bad error type ", ok))
 	AssertEquals(t, httpError.Code, 400, "bad status code")
 }
 
-func TestDefaultDeviceManager_SaveDevice_IdIsDoesNotStartWithThePrefix_returnError(t *testing.T) {
+func TestDefaultDeviceManager_SaveDevice_IdDoesNotStartWithThePrefix_returnError(t *testing.T) {
 	manager := DefaultDeviceManager{}
 	deviceModel := device.DeviceModel{
 		Id:          "/badPrefix/id1",
