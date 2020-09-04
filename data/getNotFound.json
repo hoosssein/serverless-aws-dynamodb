@@ -1,6 +1,0 @@
-{
-  "path": "localhost:8080/api/devices/id2001",
-  "pathParameters": {
-    "id": "id2001"
-  }
-}
