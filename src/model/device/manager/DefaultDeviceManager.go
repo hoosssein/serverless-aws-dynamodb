@@ -44,7 +44,7 @@ func Validate(d *device.DeviceModel) error {
 		return errors.New("id should start with " + config.IdPrefix)
 	}
 	if len(d.Id) <= len(config.IdPrefix) {
-		return errors.New("id should contains strings after " + config.IdPrefix)
+		return errors.New("id should contains string after " + config.IdPrefix)
 	}
 	return nil
 }
