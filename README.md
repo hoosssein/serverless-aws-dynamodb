@@ -1,10 +1,10 @@
-#Introduction
+# Introduction
 
 this project use AWS Api Gateway, AWS Lambda and AWS DyanmoDB to create, update and get Device Information.
 
 The project is written with Go and uses Serverless framework to organize and deploy the code on the cloud.
 
-##API
+## API
 
 ```
 HTTP POST
