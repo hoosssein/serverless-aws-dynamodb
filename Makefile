@@ -44,6 +44,7 @@ ci: lint test ## Run all the tests and code checks
 
 .PHONY: build
 build: ## Build a version
+	mkdir -p bin
 	go build -ldflags="-s -w" -o ./bin -v ./src/...
 
 .PHONY: clean
