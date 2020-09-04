@@ -1,9 +1,9 @@
 package device
 
 type DeviceModel struct {
-	Id          string `json:"id" validate:"startswith=/devices/"`
-	DeviceModel string `json:"deviceModel" validate:"required"`
-	Name        string `json:"name" validate:"required"`
-	Note        string `json:"note" validate:"required"`
-	Serial      string `json:"serial" validate:"required"`
+	Id          string `json:"id"`
+	DeviceModel string `json:"deviceModel"`
+	Name        string `json:"name"`
+	Note        string `json:"note"`
+	Serial      string `json:"serial"`
 }
