@@ -46,7 +46,7 @@ URL: https://<api-gateway-url>/api/devices/{id}
 
 Go, dep (Go dependency management tool)
 
-**build**: To build the project run following commands
+**build**: To build the project run following commands. make sure the source code is checked out in some directory under `$GOPATH/src/`.
 
 ```shell script
 dep ensure
