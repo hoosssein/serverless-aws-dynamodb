@@ -60,7 +60,7 @@ make test
 ```
 
 
-##deploy
+## deploy
 
 **requirements**:
 
